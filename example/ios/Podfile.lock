@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - tencent_trtc (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - tencent_trtc (from `.symlinks/plugins/tencent_trtc/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  tencent_trtc:
+    :path: ".symlinks/plugins/tencent_trtc/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  tencent_trtc: f9e1f15c63658fdf0b0c58116ead30cc8960c160
+
+PODFILE CHECKSUM: 083258d7f5e80b42ea9bfee905fe93049bc04c64
+
+COCOAPODS: 1.8.4
