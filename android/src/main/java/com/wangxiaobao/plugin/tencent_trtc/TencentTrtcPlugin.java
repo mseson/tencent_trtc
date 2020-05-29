@@ -32,7 +32,7 @@ import io.flutter.plugin.common.StringCodec;
 public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
 
   private MethodChannel channel;
-    private final static String TAG = "maixin Plugin";
+    private final static String TAG = "maixin Plugin~";
     private static BasicMessageChannel tencent_trtc_enter;
     private static BasicMessageChannel tencent_trtc_exit;
 
@@ -45,12 +45,15 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
       mTRTCCloud = TRTCCloud.sharedInstance(flutterPluginBinding.getApplicationContext());
       tencent_trtc_enter = new BasicMessageChannel(flutterPluginBinding.getBinaryMessenger(), "tencent_trtc_enter", StringCodec.INSTANCE);
       tencent_trtc_exit = new BasicMessageChannel(flutterPluginBinding.getBinaryMessenger(), "tencent_trtc_exit", StringCodec.INSTANCE);
+      Log.d(TAG,"onAttachedToEngine");
   }
 
 
   public static void registerWith(Registrar registrar) {
     final MethodChannel channel = new MethodChannel(registrar.messenger(), "tencent_trtc");
     channel.setMethodCallHandler(new TencentTrtcPlugin());
+      tencent_trtc_enter = new BasicMessageChannel(registrar.messenger(), "tencent_trtc_enter", StringCodec.INSTANCE);
+      tencent_trtc_exit = new BasicMessageChannel(registrar.messenger(), "tencent_trtc_exit", StringCodec.INSTANCE);
       Log.d(TAG,"registerWith");
   }
 
@@ -69,7 +72,6 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
         String user_id = call.argument("user_id");
         int appId = call.argument("appId");
         String secret_key = call.argument("secret_key");
-        Log.d(TAG,"call.method.equals(\"enterRoom\")");
         enterRoom(roomId,user_id,appId,secret_key);
     }else if (call.method.equals("exitRoom")){
         exitRoom();
@@ -88,7 +90,6 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
     //初始化
     private void registerTrtc() {
         Log.d(TAG,"registerTrtc");
-
         initConfig();
     }
 
