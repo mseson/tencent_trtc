@@ -36,13 +36,15 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
     private static BasicMessageChannel tencent_trtc_enter;
     private static BasicMessageChannel tencent_trtc_exit;
 
-    TRTCCloud mTRTCCloud;
+     TRTCCloud mTRTCCloud;
+    static Context context;
 
   @Override
   public void onAttachedToEngine( FlutterPluginBinding flutterPluginBinding) {
     channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "tencent_trtc");
     channel.setMethodCallHandler(this);
-      mTRTCCloud = TRTCCloud.sharedInstance(flutterPluginBinding.getApplicationContext());
+//      mTRTCCloud = TRTCCloud.sharedInstance(flutterPluginBinding.getApplicationContext());
+      context = flutterPluginBinding.getApplicationContext();
       tencent_trtc_enter = new BasicMessageChannel(flutterPluginBinding.getBinaryMessenger(), "tencent_trtc_enter", StringCodec.INSTANCE);
       tencent_trtc_exit = new BasicMessageChannel(flutterPluginBinding.getBinaryMessenger(), "tencent_trtc_exit", StringCodec.INSTANCE);
       Log.d(TAG,"onAttachedToEngine");
@@ -50,10 +52,12 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
 
 
   public static void registerWith(Registrar registrar) {
+
     final MethodChannel channel = new MethodChannel(registrar.messenger(), "tencent_trtc");
     channel.setMethodCallHandler(new TencentTrtcPlugin());
       tencent_trtc_enter = new BasicMessageChannel(registrar.messenger(), "tencent_trtc_enter", StringCodec.INSTANCE);
       tencent_trtc_exit = new BasicMessageChannel(registrar.messenger(), "tencent_trtc_exit", StringCodec.INSTANCE);
+      context = registrar.activeContext();
       Log.d(TAG,"registerWith");
   }
 
@@ -90,6 +94,7 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
     //初始化
     private void registerTrtc() {
         Log.d(TAG,"registerTrtc");
+        mTRTCCloud = TRTCCloud.sharedInstance();
         initConfig();
     }
 
