@@ -32,7 +32,7 @@ import io.flutter.plugin.common.StringCodec;
 public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
 
   private MethodChannel channel;
-    private final static String TAG = "maixin Plugin~";
+    private final static String TAG = "maixin Plugin~1";
     private static BasicMessageChannel tencent_trtc_enter;
     private static BasicMessageChannel tencent_trtc_exit;
 
@@ -94,7 +94,7 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
     //初始化
     private void registerTrtc() {
         Log.d(TAG,"registerTrtc");
-        mTRTCCloud = TRTCCloud.sharedInstance();
+        mTRTCCloud = TRTCCloud.sharedInstance(context);
         initConfig();
     }
 
