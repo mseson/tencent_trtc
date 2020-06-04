@@ -1,9 +1,9 @@
 #import "TencentTrtcPlugin.h"
-#import <TXLiteAVSDK_TRTC/TRTCCloud.h>
+//#import <TXLiteAVSDK_TRTC/TRTCCloud.h>
 
 @interface TencentTrtcPlugin : NSObject<FlutterPlugin>
 
-@property (strong, nonatomic) TRTCCloud* trtcCloud;
+//@property (strong, nonatomic) TRTCCloud* trtcCloud;
 
 @end
 
@@ -31,7 +31,7 @@
 }
 
 - (void)registerTrtc() {
-    self.trtcCloud = [TRTCCloud ]
+    //self.trtcCloud = [TRTCCloud ]
 }
 
 @end
