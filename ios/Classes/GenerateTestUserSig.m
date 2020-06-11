@@ -1,77 +1,19 @@
-#import "TencentTrtcPlugin.h"
+//
+//  GenerateTestUserSig.m
+//  Run
+//
+//  Created by Icemelon on 2020/6/5.
+//  Copyright © 2020 Icemelon. All rights reserved.
+//
 
+#import "GenerateTestUserSig.h"
+#import <CommonCrypto/CommonCrypto.h>
+#import <zlib.h>
 
+@implementation GenerateTestUserSig
 
-@interface TencentTrtcPlugin ()<TRTCCloudDelegate>
-
-@property (nonatomic, strong) TRTCCloud * trtcCloud;
-
-@end
-
-
-@implementation TencentTrtcPlugin
-
-
-- (void)registerTrtc {
-    self.trtcCloud = [TRTCCloud sharedInstance];
-    self.trtcCloud.delegate = self;
-}
-
-- (void)enterRoom {
-    
-    TRTCParams * params = [[TRTCParams alloc] init];
-    params.sdkAppId = 1400376695;;
-    params.userId = @"userId";
-    params.userSig = [TencentTrtcPlugin genTestUserSig:@"userId" appId:1400376695 expiredTime:604800 secretKey:@"35cd88805babafbbee7577f965441566a9b7346bb4ea5754f14d36322b755d4e"]; //线上不建议用此方法 详见方法介绍
-    params.roomId = 123456;
-    [self.trtcCloud enterRoom:params appScene:TRTCAppSceneVideoCall];
-}
-
-- (void)exitRoom {
-    [self.trtcCloud exitRoom];
-}
-
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  FlutterMethodChannel* channel = [FlutterMethodChannel
-      methodChannelWithName:@"tencent_trtc"
-            binaryMessenger:[registrar messenger]];
-  TencentTrtcPlugin* instance = [[TencentTrtcPlugin alloc] init];
-  [registrar addMethodCallDelegate:instance channel:channel];
-}
-
-- (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-  if ([@"getPlatformVersion" isEqualToString:call.method]) {
-    result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
-  }else if ([@"registerTrtc" isEqualToString:call.method]) {
-      [self registerTrtc];
-  } else if ([@"enterRoom" isEqualToString:call.method]) {
-      [self enterRoom];
-  }else if ([@"exitRoom" isEqualToString:call.method]) {
-      [self exitRoom];
-  }else {
-    result(FlutterMethodNotImplemented);
-  }
-}
-
-//代理方法
-
-- (void)onError:(TXLiteAVError)errCode errMsg:(nullable NSString *)errMsg extInfo:(nullable NSDictionary*)extInfo{
-    NSLog(@"onError errCode: %d", errCode);
-}
-
-- (void)onEnterRoom:(NSInteger)result{
-    NSLog(@"onEnterRoom: %ld", (long)result);
-    
-    [self.trtcCloud startLocalAudio];
-    
-}
-- (void)onExitRoom:(NSInteger)reason{
-    NSLog(@"onExitRoom: %ld", (long)reason);
-}
-
-//UserSig
-+ (NSString *)genTestUserSig:(NSString *)identifier appId:(NSInteger)SDKAPPID expiredTime:(NSInteger)EXPIRETIME secretKey:(NSString *)SECRETKEY {
-    
++ (NSString *)genTestUserSig:(NSString *)identifier
+{
     CFTimeInterval current = CFAbsoluteTimeGetCurrent() + kCFAbsoluteTimeIntervalSince1970;
     long TLSTime = floor(current);
     NSMutableDictionary *obj = [@{@"TLS.ver": @"2.0",
@@ -89,7 +31,7 @@
     }
     NSLog(@"%@", stringToSign);
     //NSString *sig = [self sigString:stringToSign];
-    NSString *sig = [self hmac:stringToSign SECRETKEY:SECRETKEY];
+    NSString *sig = [self hmac:stringToSign];
 
     obj[@"TLS.sig"] = sig;
     NSLog(@"sig: %@", sig);
@@ -115,7 +57,7 @@
     return result;
 }
 
-+ (NSString *)hmac:(NSString *)plainText SECRETKEY:(NSString *)SECRETKEY
++ (NSString *)hmac:(NSString *)plainText
 {
     const char *cKey  = [SECRETKEY cStringUsingEncoding:NSASCIIStringEncoding];
     const char *cData = [plainText cStringUsingEncoding:NSASCIIStringEncoding];
@@ -154,3 +96,4 @@
 }
 
 @end
+

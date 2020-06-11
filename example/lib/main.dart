@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:permission_handler/permission_handler.dart';
+//import 'package:permission_handler/permission_handler.dart';
 import 'package:tencent_trtc/tencent_trtc.dart';
 
 void main() => runApp(MyApp());
@@ -61,9 +61,9 @@ class _MyAppState extends State<MyApp> {
   }
 
 //申请权限
-  Future requestPermission(BuildContext context) async {
-    await PermissionHandler().requestPermissions([PermissionGroup.storage,PermissionGroup.microphone,PermissionGroup.storage,]);
-  }
+//  Future requestPermission(BuildContext context) async {
+//    await PermissionHandler().requestPermissions([PermissionGroup.storage,PermissionGroup.microphone,PermissionGroup.storage,]);
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,7 @@ class _MyAppState extends State<MyApp> {
             GestureDetector(
               onTap: (){
                 print(tag+"初始化");
-                requestPermission(context);
+//                requestPermission(context);
                 TencentTrtc.registerTrtc();
 
               },
