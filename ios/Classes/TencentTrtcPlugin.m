@@ -56,17 +56,17 @@
 //代理方法
 
 - (void)onError:(TXLiteAVError)errCode errMsg:(nullable NSString *)errMsg extInfo:(nullable NSDictionary*)extInfo{
-    NSLog(@"onError errCode: %d", errCode);
+    NSLog(@"ios 原生 onError errCode : %d", errCode);
 }
 
 - (void)onEnterRoom:(NSInteger)result{
-    NSLog(@"onEnterRoom: %ld", (long)result);
+    NSLog(@"ios 原生  onEnterRoom: %ld", (long)result);
     
     [self.trtcCloud startLocalAudio];
     
 }
 - (void)onExitRoom:(NSInteger)reason{
-    NSLog(@"onExitRoom: %ld", (long)reason);
+    NSLog(@"ios 原生 onExitRoom: %ld", (long)reason);
 }
 
 //UserSig
@@ -87,16 +87,16 @@
     for (NSString *key in keyOrder) {
         [stringToSign appendFormat:@"%@:%@\n", key, obj[key]];
     }
-    NSLog(@"%@", stringToSign);
+    NSLog(@"ios 原生 %@", stringToSign);
     //NSString *sig = [self sigString:stringToSign];
     NSString *sig = [self hmac:stringToSign SECRETKEY:SECRETKEY];
 
     obj[@"TLS.sig"] = sig;
-    NSLog(@"sig: %@", sig);
+    NSLog(@"ios 原生 sig: %@", sig);
     NSError *error = nil;
     NSData *jsonToZipData = [NSJSONSerialization dataWithJSONObject:obj options:0 error:&error];
     if (error) {
-        NSLog(@"[Error] json serialization failed: %@", error);
+        NSLog(@"ios 原生 [Error] json serialization failed: %@", error);
         return @"";
     }
 
@@ -107,7 +107,7 @@
     uLongf destLen = upperBound;
     int ret = compress2(dest, &destLen, (const Bytef*)zipsrc, srcLen, Z_BEST_SPEED);
     if (ret != Z_OK) {
-        NSLog(@"[Error] Compress Error %d, upper bound: %lu", ret, upperBound);
+        NSLog(@"ios 原生 [Error] Compress Error %d, upper bound: %lu", ret, upperBound);
         free(dest);
         return @"";
     }
