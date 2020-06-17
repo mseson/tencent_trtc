@@ -45,8 +45,8 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
     channel.setMethodCallHandler(this);
 //      mTRTCCloud = TRTCCloud.sharedInstance(flutterPluginBinding.getApplicationContext());
       context = flutterPluginBinding.getApplicationContext();
-      tencent_trtc_enter = new BasicMessageChannel(flutterPluginBinding.getBinaryMessenger(), "tencent_trtc_enter", StringCodec.INSTANCE);
-      tencent_trtc_exit = new BasicMessageChannel(flutterPluginBinding.getBinaryMessenger(), "tencent_trtc_exit", StringCodec.INSTANCE);
+      tencent_trtc_enter = new BasicMessageChannel(flutterPluginBinding.getBinaryMessenger(), "tencent_trtc_enter", StandardMessageCodec.INSTANCE);
+      tencent_trtc_exit = new BasicMessageChannel(flutterPluginBinding.getBinaryMessenger(), "tencent_trtc_exit", StandardMessageCodec.INSTANCE);
       Log.d(TAG,"onAttachedToEngine");
   }
 
