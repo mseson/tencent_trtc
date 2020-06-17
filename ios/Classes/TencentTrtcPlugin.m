@@ -74,7 +74,7 @@
     
     [self.trtcCloud startLocalAudio];
      //NSString *msg = @0;
-    [self.messageChannel sendMessage:@"success"];
+    [self.messageChannel sendMessage:@"0"];
     
 }
 - (void)onExitRoom:(NSInteger)reason{
