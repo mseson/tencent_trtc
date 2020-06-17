@@ -10,11 +10,20 @@
 
 
 @implementation TencentTrtcPlugin
-
+@implementation  FlutterBasicMessageChannel* messageChannel
+@implementation  FlutterBasicMessageChannel* messageChannel2
 
 - (void)registerTrtc {
     self.trtcCloud = [TRTCCloud sharedInstance];
     self.trtcCloud.delegate = self;
+    [self BasicMessageChannelFunction];
+}
+
+-(void) BasicMessageChannelFunction{
+    FlutterViewController* controller = (FlutterViewController*)self.window.rootViewController;
+       // 初始化定义
+    messageChannel = [FlutterBasicMessageChannel messageChannelWithName:@"tencent_trtc_enter" binaryMessenger:controller];
+    messageChannel2 = [FlutterBasicMessageChannel messageChannelWithName:@"tencent_trtc_exit" binaryMessenger:controller];
 }
 
 - (void)enterRoom {
@@ -64,6 +73,8 @@
     NSLog(@"ios 原生  onEnterRoom: %ld", (long)result);
     
     [self.trtcCloud startLocalAudio];
+     NSString *msg = @"0";
+    [messageChannel sendMessage:msg];
     
 }
 - (void)onExitRoom:(NSInteger)reason{
