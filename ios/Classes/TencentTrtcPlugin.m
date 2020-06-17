@@ -40,6 +40,7 @@
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
+    NSLog(@"ios 原生 handleMethodCall %@ ", call.method);
   if ([@"getPlatformVersion" isEqualToString:call.method]) {
     result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
   }else if ([@"registerTrtc" isEqualToString:call.method]) {
