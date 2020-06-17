@@ -73,8 +73,8 @@
     NSLog(@"ios 原生  onEnterRoom: %ld", (long)result);
     
     [self.trtcCloud startLocalAudio];
-     NSString *msg = @0;
-    [self.messageChannel sendMessage:msg];
+     //NSString *msg = @0;
+    [self.messageChannel sendMessage:@"success"];
     
 }
 - (void)onExitRoom:(NSInteger)reason{
