@@ -5,13 +5,13 @@
 @interface TencentTrtcPlugin ()<TRTCCloudDelegate>
 
 @property (nonatomic, strong) TRTCCloud * trtcCloud;
+@property (nonatomic, strong) FlutterBasicMessageChannel * messageChannel;
+@property (nonatomic, strong) FlutterBasicMessageChannel * messageChannel2;
 
 @end
 
 
 @implementation TencentTrtcPlugin
-@implementation  FlutterBasicMessageChannel* messageChannel
-@implementation  FlutterBasicMessageChannel* messageChannel2
 
 - (void)registerTrtc {
     self.trtcCloud = [TRTCCloud sharedInstance];
@@ -20,10 +20,10 @@
 }
 
 -(void) BasicMessageChannelFunction{
-    FlutterViewController* controller = (FlutterViewController*)self.window.rootViewController;
+    FlutterViewController* controller = (FlutterViewController*)[UIApplication sharedApplication].keyWindow.rootViewController;
        // 初始化定义
-    messageChannel = [FlutterBasicMessageChannel messageChannelWithName:@"tencent_trtc_enter" binaryMessenger:controller];
-    messageChannel2 = [FlutterBasicMessageChannel messageChannelWithName:@"tencent_trtc_exit" binaryMessenger:controller];
+    self.messageChannel = [FlutterBasicMessageChannel messageChannelWithName:@"tencent_trtc_enter" binaryMessenger:controller];
+    self.messageChannel2 = [FlutterBasicMessageChannel messageChannelWithName:@"tencent_trtc_exit" binaryMessenger:controller];
 }
 
 - (void)enterRoom {
@@ -74,7 +74,7 @@
     
     [self.trtcCloud startLocalAudio];
      NSString *msg = @"0";
-    [messageChannel sendMessage:msg];
+    [self.messageChannel sendMessage:msg];
     
 }
 - (void)onExitRoom:(NSInteger)reason{
