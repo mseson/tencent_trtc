@@ -26,13 +26,12 @@
     self.messageChannel2 = [FlutterBasicMessageChannel messageChannelWithName:@"tencent_trtc_exit" binaryMessenger:controller];
 }
 
-- (void)enterRoom {
-    
+- (void)enterRoomWithRoomId:(NSNumber *)roomId user_id:(NSString *)user_id appId:(NSNumber *)appId secret_key:(NSString *)secret_key {
     TRTCParams * params = [[TRTCParams alloc] init];
-    params.sdkAppId = 1400376695;;
+    params.sdkAppId = [appId intValue];
     params.userId = @"userId";
-    params.userSig = [TencentTrtcPlugin genTestUserSig:@"userId" appId:1400376695 expiredTime:604800 secretKey:@"35cd88805babafbbee7577f965441566a9b7346bb4ea5754f14d36322b755d4e"]; //线上不建议用此方法 详见方法介绍
-    params.roomId = 123456;
+    params.userSig = [TencentTrtcPlugin genTestUserSig:@"userId" appId:[appId intValue] expiredTime:604800 secretKey:secret_key]; //线上不建议用此方法 详见方法介绍
+    params.roomId = [roomId intValue];
     [self.trtcCloud enterRoom:params appScene:TRTCAppSceneVideoCall];
 }
 
@@ -55,7 +54,12 @@
   }else if ([@"registerTrtc" isEqualToString:call.method]) {
       [self registerTrtc];
   } else if ([@"enterRoom" isEqualToString:call.method]) {
-      [self enterRoom];
+      NSNumber *roomId = call.arguments[@"roomId"];
+      NSString *user_id = call.arguments[@"user_id"];
+      NSNumber *appId = call.arguments[@"appId"];
+      NSString *secret_key = call.arguments[@"appId"];
+      NSLog(@"ios 原生 enterRoom  : %ld", (long)roomId);
+      [self enterRoomWithRoomId:roomId user_id:user_id appId:appId secret_key:secret_key];
   }else if ([@"exitRoom" isEqualToString:call.method]) {
       [self exitRoom];
   }else {
