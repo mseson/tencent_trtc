@@ -29,9 +29,10 @@
 - (void)enterRoomWithRoomId:(NSNumber *)roomId user_id:(NSString *)user_id appId:(NSNumber *)appId secret_key:(NSString *)secret_key {
     TRTCParams * params = [[TRTCParams alloc] init];
     params.sdkAppId = [appId intValue];
-    params.userId = @"userId";
-    params.userSig = [TencentTrtcPlugin genTestUserSig:@"userId" appId:[appId intValue] expiredTime:604800 secretKey:secret_key]; //线上不建议用此方法 详见方法介绍
+    params.userId = user_id;
+    params.userSig = [TencentTrtcPlugin genTestUserSig:user_id appId:[appId intValue] expiredTime:604800 secretKey:secret_key]; //线上不建议用此方法 详见方法介绍
     params.roomId = [roomId intValue];
+    NSLog(@"________________ %@", params);
     [self.trtcCloud enterRoom:params appScene:TRTCAppSceneVideoCall];
 }
 
@@ -57,7 +58,7 @@
       NSNumber *roomId = call.arguments[@"roomId"];
       NSString *user_id = call.arguments[@"user_id"];
       NSNumber *appId = call.arguments[@"appId"];
-      NSString *secret_key = call.arguments[@"appId"];
+      NSString *secret_key = call.arguments[@"secret_key"];
       [self enterRoomWithRoomId:roomId user_id:user_id appId:appId secret_key:secret_key];
   }else if ([@"exitRoom" isEqualToString:call.method]) {
       [self exitRoom];
