@@ -58,7 +58,6 @@
       NSString *user_id = call.arguments[@"user_id"];
       NSNumber *appId = call.arguments[@"appId"];
       NSString *secret_key = call.arguments[@"appId"];
-      NSLog(@"ios 原生 enterRoom  : %ld", (long)roomId);
       [self enterRoomWithRoomId:roomId user_id:user_id appId:appId secret_key:secret_key];
   }else if ([@"exitRoom" isEqualToString:call.method]) {
       [self exitRoom];
