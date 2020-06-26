@@ -199,7 +199,7 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
         @Override
         public void onRemoteUserEnterRoom(String userId) {
             Log.d(TAG,"通信成功  onEnterRoom 有人进房了"+userId );
-            tencent_trtc_enter.send(userId );
+            //tencent_trtc_enter.send(userId );
         }
 
         @Override
@@ -210,7 +210,7 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
         @Override
         public void onRemoteUserLeaveRoom(String userId, int reason) {
             Log.d(TAG,"onRemoteUserLeaveRoom   : "+userId +"     "+reason);
-            tencent_trtc_enter.send("通信成功   onRemoteUserLeaveRoom  有人进房了"+userId );
+            //tencent_trtc_enter.send("通信成功   onRemoteUserLeaveRoom  有人进房了"+userId );
         }
 
         @Override
