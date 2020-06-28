@@ -120,13 +120,13 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
     //开启麦克风
     private void startLocalAudio() {
         Log.d(TAG,"startLocalAudio");
-        mTRTCCloud.startLocalAudio();
+        mTRTCCloud.muteLocalAudio(false);
     }
 
     //关闭麦克风
     private void stopLocalAudio() {
         Log.d(TAG,"stopLocalAudio");
-        mTRTCCloud.stopLocalAudio();
+        mTRTCCloud.muteLocalAudio(true);
     }
 
 
