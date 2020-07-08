@@ -140,6 +140,7 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
         mTRTCCloud.enableAudioVolumeEvaluation(800);
         mTRTCCloud.setListener(mChatRoomTRTCListener);
         mTRTCCloud.startLocalAudio();
+        mTRTCCloud.muteAllRemoteAudio(false);
         enable16KSampleRate(true);
     }
 
