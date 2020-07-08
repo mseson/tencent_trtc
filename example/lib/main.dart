@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -19,17 +21,18 @@ class _MyAppState extends State<MyApp> {
   int appId =12323; //在腾讯云实时音频注册的应用id
   String secret_key = '';//在腾讯云实时音频注册的应用获取到的secret_key
 
-  static const BasicMessageChannel _messageChannel = const BasicMessageChannel('tencent_trtc_enter', StringCodec());
-  static const BasicMessageChannel _messageChannel2 = const BasicMessageChannel('tencent_trtc_exit', StringCodec());
+  static const BasicMessageChannel _messageChannel = const BasicMessageChannel('tencent_trtc_message', StringCodec());
+
 
 
   Future<String> _handleMessage(message) async {
     print(tag+'收到native的消息${message}');
+    final responseJson = json.decode(message);
+    print(tag+'json解析${responseJson["action"]}');
+    print(tag+'json解析${responseJson["result"]}');
   }
 
-  Future<String> _handleMessage2(message) async {
-    print(tag+'收到native的消息${message}');
-  }
+
 
 
   @override
@@ -37,7 +40,6 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     initPlatformState();
     _messageChannel.setMessageHandler(_handleMessage);
-    _messageChannel2.setMessageHandler(_handleMessage2);
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.

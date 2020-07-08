@@ -1,8 +1,6 @@
 package com.wangxiaobao.plugin.tencent_trtc;
 
-import android.app.Application;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -15,80 +13,60 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.BasicMessageChannel;
-import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
-import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
-import io.flutter.plugin.common.StandardMessageCodec;
 import io.flutter.plugin.common.StringCodec;
 
-/** TencentTrtcPlugin */
-public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
+public class TempTencentTrtcPlugin implements FlutterPlugin, MethodChannel.MethodCallHandler {
 
-  private MethodChannel channel;
+    private MethodChannel channel;
     private final static String TAG = "maixin Plugin~1";
-    private static BasicMessageChannel tencent_trtc_enter;
-    private static BasicMessageChannel tencent_trtc_exit;
+    private static BasicMessageChannel tencentTrtcMessage;
 
-     TRTCCloud mTRTCCloud;
+    TRTCCloud mTRTCCloud;
     static Context context;
 
-  @Override
-  public void onAttachedToEngine( FlutterPluginBinding flutterPluginBinding) {
-    channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "tencent_trtc");
-    channel.setMethodCallHandler(this);
+    @Override
+    public void onAttachedToEngine( FlutterPluginBinding flutterPluginBinding) {
+        channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "tencent_trtc");
+        channel.setMethodCallHandler(this);
 //      mTRTCCloud = TRTCCloud.sharedInstance(flutterPluginBinding.getApplicationContext());
-      context = flutterPluginBinding.getApplicationContext();
-      tencent_trtc_enter = new BasicMessageChannel(flutterPluginBinding.getBinaryMessenger(), "tencent_trtc_enter_android", StringCodec.INSTANCE);
-      tencent_trtc_exit = new BasicMessageChannel(flutterPluginBinding.getBinaryMessenger(), "tencent_trtc_exit", StringCodec.INSTANCE);
-      Log.d(TAG,"onAttachedToEngine");
-  }
+        context = flutterPluginBinding.getApplicationContext();
+        tencentTrtcMessage = new BasicMessageChannel(flutterPluginBinding.getBinaryMessenger(), "tencent_trtc_message", StringCodec.INSTANCE);
 
-
-  public static void registerWith(Registrar registrar) {
-
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "tencent_trtc");
-    channel.setMethodCallHandler(new TencentTrtcPlugin());
-      tencent_trtc_enter = new BasicMessageChannel(registrar.messenger(), "tencent_trtc_enter_android", StringCodec.INSTANCE);
-      tencent_trtc_exit = new BasicMessageChannel(registrar.messenger(), "tencent_trtc_exit", StringCodec.INSTANCE);
-      context = registrar.activeContext();
-      Log.d(TAG,"registerWith");
-  }
-
-
-
-
-  @Override
-  public void onMethodCall( MethodCall call,  Result result) {
-    if (call.method.equals("getPlatformVersion")) {
-      result.success("Android " + android.os.Build.VERSION.RELEASE);
-    } else if (call.method.equals("registerTrtc")){
-        registerTrtc();
-
-    }else if (call.method.equals("enterRoom")){
-        int roomId = call.argument("roomId");
-        String user_id = call.argument("user_id");
-        int appId = call.argument("appId");
-        String secret_key = call.argument("secret_key");
-        enterRoom(roomId,user_id,appId,secret_key);
-    }else if (call.method.equals("exitRoom")){
-        exitRoom();
-
-    }else if (call.method.equals("startLocalAudio")){
-        startLocalAudio();
-    }else if (call.method.equals("stopLocalAudio")){
-        stopLocalAudio();
-    }else {
-        result.notImplemented();
+        Log.d(TAG,"onAttachedToEngine");
     }
-  }
+
+
+
+
+    @Override
+    public void onMethodCall(MethodCall call, MethodChannel.Result result) {
+        if (call.method.equals("getPlatformVersion")) {
+            result.success("Android " + android.os.Build.VERSION.RELEASE);
+        } else if (call.method.equals("registerTrtc")){
+            registerTrtc();
+
+        }else if (call.method.equals("enterRoom")){
+            int roomId = call.argument("roomId");
+            String user_id = call.argument("user_id");
+            int appId = call.argument("appId");
+            String secret_key = call.argument("secret_key");
+            enterRoom(roomId,user_id,appId,secret_key);
+        }else if (call.method.equals("exitRoom")){
+            exitRoom();
+
+        }else if (call.method.equals("startLocalAudio")){
+            startLocalAudio();
+        }else if (call.method.equals("stopLocalAudio")){
+            stopLocalAudio();
+        }else {
+            result.notImplemented();
+        }
+    }
 
 
 
@@ -121,20 +99,20 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
     //开启麦克风
     private void startLocalAudio() {
         Log.d(TAG,"startLocalAudio");
-        mTRTCCloud.muteLocalAudio(false);
+        mTRTCCloud.startLocalAudio();
     }
 
     //关闭麦克风
     private void stopLocalAudio() {
         Log.d(TAG,"stopLocalAudio");
-        mTRTCCloud.muteLocalAudio(true);
+        mTRTCCloud.stopLocalAudio();
     }
 
 
     @Override
-  public void onDetachedFromEngine( FlutterPluginBinding binding) {
-    channel.setMethodCallHandler(null);
-  }
+    public void onDetachedFromEngine( FlutterPluginBinding binding) {
+        channel.setMethodCallHandler(null);
+    }
 
     private void initConfig() {
         mTRTCCloud.enableAudioVolumeEvaluation(800);
@@ -171,7 +149,7 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
             super.onExitRoom(reason);
 
             Log.d(TAG,"onExitRoom   : "+reason);
-//            tencent_trtc_exit.send("通信成功   onExitRoom  离开房间  "+reason);
+
         }
 
         @Override
@@ -180,15 +158,28 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
         }
 
         @Override
-        public void onEnterRoom(long result) {
-            Log.d(TAG,"onEnterRoom   : "+result);
-            // 处理现在是否播放声音
-            if (result > 0) {
-                tencent_trtc_enter.send("0");
+        public void onEnterRoom(long time) {
+            Log.d(TAG,"onEnterRoom   : "+time);
+            String result ="1";
+            if (time > 0) {
+                result = "0";
+//                tencent_trtc_enter.send("0");
             }else {
-                tencent_trtc_enter.send("1");
+                result ="1";
+//                tencent_trtc_enter.send("1");
             }
-            startLocalAudio();
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("action","enterRoom");
+
+                jsonObject.put("result",result);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            tencentTrtcMessage.send(jsonObject.toString());
+
+
         }
 
         @Override
@@ -200,7 +191,8 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
         @Override
         public void onRemoteUserEnterRoom(String userId) {
             Log.d(TAG,"通信成功  onEnterRoom 有人进房了"+userId );
-            //tencent_trtc_enter.send(userId );
+
+
         }
 
         @Override
@@ -211,7 +203,7 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
         @Override
         public void onRemoteUserLeaveRoom(String userId, int reason) {
             Log.d(TAG,"onRemoteUserLeaveRoom   : "+userId +"     "+reason);
-            //tencent_trtc_enter.send("通信成功   onRemoteUserLeaveRoom  有人进房了"+userId );
+            tencentTrtcMessage.send("通信成功   onRemoteUserLeaveRoom  有人进房了"+userId );
         }
 
         @Override
@@ -232,7 +224,7 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Log.d(TAG,"onUserVoiceVolume  :  "+jsonObject.toString());
+                tencentTrtcMessage.send(jsonObject.toString());
             }
         }
 
@@ -241,6 +233,5 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
 
         }
     };
-
 
 }

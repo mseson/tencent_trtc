@@ -85,6 +85,10 @@
     NSLog(@"ios 原生 onExitRoom: %ld", (long)reason);
 }
 
+- (void)onUserVoiceVolume:(NSArray<TRTCVolumeInfo *> *)userVolumes totalVolume:(NSInteger)totalVolume{
+    
+}
+
 //UserSig
 + (NSString *)genTestUserSig:(NSString *)identifier appId:(NSInteger)SDKAPPID expiredTime:(NSInteger)EXPIRETIME secretKey:(NSString *)SECRETKEY {
     
