@@ -62,7 +62,11 @@
       [self enterRoomWithRoomId:roomId user_id:user_id appId:appId secret_key:secret_key];
   }else if ([@"exitRoom" isEqualToString:call.method]) {
       [self exitRoom];
-  }else {
+  }else if ([@"startLocalAudio" isEqualToString:call.method]) {
+         [self startLocalAudio];
+     }else if ([@"stopLocalAudio" isEqualToString:call.method]) {
+            [self startLocalAudio];
+        }else {
     result(FlutterMethodNotImplemented);
   }
 }
@@ -77,12 +81,22 @@
     NSLog(@"ios 原生  onEnterRoom: %ld", (long)result);
     
     [self.trtcCloud startLocalAudio];
+    [self.trtcCloud muteAllRemoteAudio:NO];
      //NSString *msg = @0;
     [self.messageChannel sendMessage:@"0"];
     
 }
 - (void)onExitRoom:(NSInteger)reason{
     NSLog(@"ios 原生 onExitRoom: %ld", (long)reason);
+}
+
+
+- (void)startLocalAudio {
+    [self.trtcCloud muteLocalAudio:NO];
+}
+
+- (void)stopLocalAudio {
+    [self.trtcCloud muteLocalAudio:YES];
 }
 
 - (void)onUserVoiceVolume:(NSArray<TRTCVolumeInfo *> *)userVolumes totalVolume:(NSInteger)totalVolume{
