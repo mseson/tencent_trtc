@@ -65,7 +65,7 @@
   }else if ([@"startLocalAudio" isEqualToString:call.method]) {
          [self startLocalAudio];
      }else if ([@"stopLocalAudio" isEqualToString:call.method]) {
-            [self startLocalAudio];
+            [self stopLocalAudio];
         }else {
     result(FlutterMethodNotImplemented);
   }
