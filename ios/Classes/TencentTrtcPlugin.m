@@ -6,7 +6,6 @@
 
 @property (nonatomic, strong) TRTCCloud * trtcCloud;
 @property (nonatomic, strong) FlutterBasicMessageChannel * messageChannel;
-@property (nonatomic, strong) FlutterBasicMessageChannel * messageChannel2;
 
 @end
 
@@ -22,8 +21,8 @@
 -(void) BasicMessageChannelFunction{
     FlutterViewController* controller = (FlutterViewController*)[UIApplication sharedApplication].keyWindow.rootViewController;
        // 初始化定义
-    self.messageChannel = [FlutterBasicMessageChannel messageChannelWithName:@"tencent_trtc_enter_ios" binaryMessenger:controller];
-    self.messageChannel2 = [FlutterBasicMessageChannel messageChannelWithName:@"tencent_trtc_exit" binaryMessenger:controller];
+    self.messageChannel = [FlutterBasicMessageChannel messageChannelWithName:@"tencent_trtc_ios" binaryMessenger:controller];
+
 }
 
 - (void)enterRoomWithRoomId:(NSNumber *)roomId user_id:(NSString *)user_id appId:(NSNumber *)appId secret_key:(NSString *)secret_key {
