@@ -113,7 +113,7 @@ class _MyAppState extends State<MyApp> {
             GestureDetector(
               onTap: (){
                 print(tag+"进入房间");
-                TencentTrtc.enterRoom(roomId: 123456,user_id: "user_id",appId: 1400376695,secret_key: "35cd88805babafbbee7577f965441566a9b7346bb4ea5754f14d36322b755d4e");
+//                TencentTrtc.enterRoom(roomId: 123456,user_id: "user_id",appId: 1400376695,userSig: "35cd88805babafbbee7577f965441566a9b7346bb4ea5754f14d36322b755d4e");
 
               },
               child: Text('进入房间',style: TextStyle(fontSize: 30),),),
