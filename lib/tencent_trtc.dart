@@ -16,13 +16,24 @@ class TencentTrtc {
   }
 
   //进入聊天房间
-  static Future enterRoom(
+  static Future enterRoomSign(
       {int roomId, String user_id, int appId, String userSig}) async {
-    await _channel.invokeMethod("enterRoom", {
+    await _channel.invokeMethod("enterRoomSign", {
       "roomId": roomId,
       "user_id": user_id,
       "appId": appId,
       "userSig": userSig,
+    });
+  }
+
+  //进入聊天房间
+  static Future enterRoom(
+      {int roomId, String user_id, int appId, String secret_key}) async {
+    await _channel.invokeMethod("enterRoom", {
+      "roomId": roomId,
+      "user_id": user_id,
+      "appId": appId,
+      "secret_key": secret_key,
     });
   }
 

@@ -69,12 +69,18 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
     } else if (call.method.equals("registerTrtc")){
         registerTrtc();
 
-    }else if (call.method.equals("enterRoom")){
+    }else if (call.method.equals("enterRoomSign")){
         int roomId = call.argument("roomId");
         String user_id = call.argument("user_id");
         int appId = call.argument("appId");
         String userSig = call.argument("userSig");
-        enterRoom(roomId,user_id,appId,userSig);
+        enterRoomSign(roomId,user_id,appId,userSig);
+    }else if (call.method.equals("enterRoom")){
+        int roomId = call.argument("roomId");
+        String user_id = call.argument("user_id");
+        int appId = call.argument("appId");
+        String secret_key = call.argument("secret_key");
+        enterRoom(roomId,user_id,appId,secret_key);
     }else if (call.method.equals("exitRoom")){
         exitRoom();
 
@@ -97,13 +103,27 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
     }
 
     //进入聊天房间
-    private void enterRoom(int roomId,String user_id,int appId,String userSig) {
+    private void enterRoomSign(int roomId,String user_id,int appId,String userSig) {
         Log.d(TAG,"enterRoom  roomId  : "+roomId  +"   user_id  : "+user_id +"   appId : "+appId  +"   userSig : "+userSig);
         TRTCCloudDef.TRTCParams trtcParams = new TRTCCloudDef.TRTCParams();
         trtcParams.sdkAppId = appId;
         trtcParams.userId = user_id;
         trtcParams.roomId = roomId;
         trtcParams.userSig = userSig;
+        trtcParams.role = TRTCCloudDef.TRTCRoleAnchor;
+
+        mTRTCCloud.enterRoom(trtcParams,TRTCCloudDef.TRTC_APP_SCENE_VOICE_CHATROOM);
+
+    }
+
+    //进入聊天房间
+    private void enterRoom(int roomId,String user_id,int appId,String secret_key) {
+        Log.d(TAG,"enterRoom  roomId  : "+roomId  +"   user_id  : "+user_id +"   appId : "+appId  +"   secret_key : "+secret_key);
+        TRTCCloudDef.TRTCParams trtcParams = new TRTCCloudDef.TRTCParams();
+        trtcParams.sdkAppId = appId;
+        trtcParams.userId = user_id;
+        trtcParams.roomId = roomId;
+        trtcParams.userSig = TrtcUtils.genTestUserSig(user_id,appId,secret_key);
         trtcParams.role = TRTCCloudDef.TRTCRoleAnchor;
 
         mTRTCCloud.enterRoom(trtcParams,TRTCCloudDef.TRTC_APP_SCENE_VOICE_CHATROOM);
