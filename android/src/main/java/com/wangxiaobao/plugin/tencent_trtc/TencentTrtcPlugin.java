@@ -35,6 +35,7 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
   private MethodChannel channel;
     private final static String TAG = "TencentTrtcPlugin";
     private static BasicMessageChannel tencent_trtc_enter;
+    private static BasicMessageChannel tencent_trtc_trtcQuality;
 
 
      TRTCCloud mTRTCCloud;
@@ -46,6 +47,7 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
     channel.setMethodCallHandler(this);
       context = flutterPluginBinding.getApplicationContext();
       tencent_trtc_enter = new BasicMessageChannel(flutterPluginBinding.getBinaryMessenger(), "tencent_trtc_android", StringCodec.INSTANCE);
+      tencent_trtc_trtcQuality = new BasicMessageChannel(flutterPluginBinding.getBinaryMessenger(), "tencent_trtc_quality", StandardMessageCodec.INSTANCE);
       Log.d(TAG,"onAttachedToEngine");
   }
 
@@ -257,6 +259,13 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
         @Override
         public void onAudioEffectFinished(int effectId, int code) {
 
+        }
+
+        @Override
+        public void onNetworkQuality(TRTCCloudDef.TRTCQuality trtcQuality, ArrayList<TRTCCloudDef.TRTCQuality> arrayList) {
+            super.onNetworkQuality(trtcQuality, arrayList);
+            Log.d(TAG,"onNetworkQuality ：" +trtcQuality.quality);
+            tencent_trtc_trtcQuality.send(trtcQuality.quality);
         }
     };
 
