@@ -57,6 +57,7 @@ public class TencentTrtcPlugin implements FlutterPlugin, MethodCallHandler {
     final MethodChannel channel = new MethodChannel(registrar.messenger(), "tencent_trtc");
     channel.setMethodCallHandler(new TencentTrtcPlugin());
       tencent_trtc_enter = new BasicMessageChannel(registrar.messenger(), "tencent_trtc_enter_android", StringCodec.INSTANCE);
+      tencent_trtc_trtcQuality = new BasicMessageChannel(registrar.messenger(), "tencent_trtc_quality", StandardMessageCodec.INSTANCE);
       context = registrar.activeContext();
       Log.d(TAG,"registerWith");
   }
