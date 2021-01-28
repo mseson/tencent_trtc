@@ -6,6 +6,7 @@
 
 @property (nonatomic, strong) TRTCCloud * trtcCloud;
 @property (nonatomic, strong) FlutterBasicMessageChannel * messageChannel;
+@property (nonatomic, strong) FlutterBasicMessageChannel * qualityChannel;
 
 @end
 
@@ -22,6 +23,8 @@
     FlutterViewController* controller = (FlutterViewController*)[UIApplication sharedApplication].keyWindow.rootViewController;
        // 初始化定义
     self.messageChannel = [FlutterBasicMessageChannel messageChannelWithName:@"tencent_trtc_ios" binaryMessenger:controller];
+    self.qualityChannel = [FlutterBasicMessageChannel messageChannelWithName:@"tencent_trtc_quality" binaryMessenger:controller];
+
 
 }
 
@@ -93,6 +96,12 @@
 - (void)onError:(TXLiteAVError)errCode errMsg:(nullable NSString *)errMsg extInfo:(nullable NSDictionary*)extInfo{
     NSLog(@"ios 原生 onError errCode : %d", errCode);
 }
+- (void)onNetworkQuality: (TRTCQualityInfo*)localQuality remoteQuality:(NSArray<TRTCQualityInfo*>*)remoteQuality{
+    
+    [self.messageChannel sendMessage:[NSString stringWithFormat:@"%ld",(long)localQuality.quality]];
+    NSLog(@"ios 原生 onError errCode : %@",[NSString stringWithFormat:@"%ld",(long)localQuality.quality]);
+}
+
 
 - (void)onEnterRoom:(NSInteger)result{
     NSLog(@"ios 原生  onEnterRoom: %ld", (long)result);
