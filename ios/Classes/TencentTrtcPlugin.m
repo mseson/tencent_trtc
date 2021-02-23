@@ -98,7 +98,7 @@
 }
 - (void)onNetworkQuality: (TRTCQualityInfo*)localQuality remoteQuality:(NSArray<TRTCQualityInfo*>*)remoteQuality{
     
-    [self.messageChannel sendMessage:[NSString stringWithFormat:@"%ld",(long)localQuality.quality]];
+    [self.qualityChannel sendMessage:[NSString stringWithFormat:@"%ld",(long)localQuality.quality]];
     NSLog(@"ios 原生 onError errCode : %@",[NSString stringWithFormat:@"%ld",(long)localQuality.quality]);
 }
 
