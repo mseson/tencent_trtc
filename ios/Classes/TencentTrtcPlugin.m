@@ -103,13 +103,16 @@
 }
 
 
+
 - (void)onEnterRoom:(NSInteger)result{
     NSLog(@"ios 原生  onEnterRoom: %ld", (long)result);
-    
-    [self.trtcCloud startLocalAudio];
-    [self.trtcCloud muteAllRemoteAudio:NO];
-     //NSString *msg = @0;
-    [self.messageChannel sendMessage:@"0"];
+    if(result>0){
+        [self.trtcCloud startLocalAudio];
+        [self.trtcCloud muteAllRemoteAudio:NO];
+        [self.messageChannel sendMessage:@"0"];
+    }else{
+        [self.messageChannel sendMessage:@"1"];
+    }
     
 }
 - (void)onExitRoom:(NSInteger)reason{
