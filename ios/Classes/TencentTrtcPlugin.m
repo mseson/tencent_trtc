@@ -107,7 +107,7 @@
 - (void)onEnterRoom:(NSInteger)result{
     NSLog(@"ios 原生  onEnterRoom: %ld", (long)result);
     if(result>0){
-        [self.trtcCloud startLocalAudio];
+        [self.trtcCloud startLocalAudio:TRTCAudioQualityDefault];
         [self.trtcCloud muteAllRemoteAudio:NO];
         [self.messageChannel sendMessage:@"0"];
     }else{
